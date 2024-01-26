@@ -1,5 +1,5 @@
 library(readxl)
-data <- read_excel("finalReport.xlsx")
+data <- read_excel("data/finalReport.xlsx")
 View(data)
 
 data$改善警告 <- ifelse(data$改善警告 == "警告あり", 1, 0)
@@ -43,14 +43,18 @@ f_logistic_model <- glm(改善警告 ~ 年齢 + 身長 + 体重,
 summary(logistic_model)
 
 # 推定
-logistic_result <- predict(logistic_model, data, type = "response")
-logistic_result <- round(logistic_result)
+m_logistic_result <- predict(m_logistic_model, mData, type = "response")
+m_logistic_result <- round(m_logistic_result)
+
+f_logistic_result <- predict(f_logistic_model, fData, type = "response")
+f_logistic_result <- round(f_logistic_result)
 
 logistic_table <- data.frame(Status = data[, 1], Predict = logistic_result)
 
 logistic_table <- table(logistic_table)
 
 # 誤判別率
-mean(data[, 1] != logistic_result)
+mean(mData[, 1] != m_logistic_result)
+mean(fData[, 1] != f_logistic_result)
 
 1-sum(diag(logistic_table))/sum(logistic_table)

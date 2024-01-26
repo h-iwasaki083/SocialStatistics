@@ -1,5 +1,5 @@
 library(readxl)
-data <- read_excel("finalReport.xlsx")
+data <- read_excel("data/finalReport.xlsx")
 View(data)
 
 # 体格指数に必要なものだけ取り出し
@@ -7,9 +7,11 @@ height_weight <- data[, 4:5]
 
 # 相関係数行列による主成分分析
 result_1 <- prcomp(height_weight, scale = TRUE) 
+result_2 <- prcomp(height_weight, scale = FALSE) 
 
 # 固有値のルートと，主成分係数
 result_1
+result_2
 
 # 固有値
 result_1$sdev^2
