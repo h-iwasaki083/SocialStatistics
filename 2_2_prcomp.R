@@ -6,36 +6,37 @@ View(data)
 height_weight <- data[, 4:5]
 
 # 相関係数行列による主成分分析
-result_1 <- prcomp(height_weight, scale = TRUE) 
-result_2 <- prcomp(height_weight, scale = FALSE) 
+prcomp_model <- prcomp(height_weight, scale = TRUE) 
 
 # 固有値のルートと，主成分係数
-result_1
-result_2
+prcomp_model
 
 # 固有値
-result_1$sdev^2
+prcomp_model$sdev^2
 
 # 寄与率，累積寄与率の表示
-summary(result_1)
+summary(prcomp_model)
 
 #主成分負荷量
-Loadings <- result_1$rotation * diag(cor(height_weight))^(-0.5) %*% t(result_1$sdev)
-Loadings
+Loadings <- prcomp_model$rotation * diag(cor(height_weight))^(-0.5) %*% t(prcomp_model$sdev)
 
 
-S# 第1主成分負荷量と第2主成分負荷量の散布図の作成
+# 第1主成分負荷量と第2主成分負荷量の散布図の作成
 plot(Loadings[, 1], Loadings[, 2], type = "n",
      xlim = c(-1, 1), ylim = c(-1, 1), xlab = "第1主成分負荷量", ylab = "第2主成分負荷量")
 text(Loadings[, 1], Loadings[, 2], rownames(Loadings))
 
 # 主成分得点の取得
-scores <- as.data.frame(result_1$x)
+scores <- as.data.frame(prcomp_model$x)
+
+# dataに付け加え
+data <- cbind(data, scores[1])
+
 
 # CSVファイルに出力
 write.csv(scores, "主成分得点.csv", row.names = FALSE)
 
-# 既存のファイルに追記したい！→ できなかったので断念…。
+# -----既存のファイルに追記したい！→ できなかったので断念…。-----
 install.packages("openxlsx")
 library(openxlsx)
 

@@ -1,7 +1,7 @@
 # 基本統計量
 
 library(readxl)
-data <- read_excel("finalReport.xlsx")
+data <- read_excel("data/finalReport.xlsx")
 View(data)
 
 # 改善警告あり:1 なし:0 に変換
