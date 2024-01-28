@@ -56,15 +56,5 @@ summary(logistic_model_2)
 logistic_result_2 <- predict(logistic_model_2, data, type = "response")
 logistic_result_2 <- round(logistic_result_2)
 
-logistic_table_2 <- data.frame(Status = data[, 1], Predict = logistic_result_2)
-
-logistic_table_2 <- table(logistic_table_2)
-
 # 誤判別率
 mean(data[, 1] != logistic_result_2)
-
-1-sum(diag(logistic_table_2))/sum(logistic_table_2)
-
-
-
-

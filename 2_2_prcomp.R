@@ -1,3 +1,4 @@
+# 体格指数の作成
 library(readxl)
 data <- read_excel("data/finalReport.xlsx")
 View(data)

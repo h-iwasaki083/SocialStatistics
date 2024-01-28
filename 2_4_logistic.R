@@ -1,3 +1,4 @@
+# 性別、年齢、身長、体重と改善警告の有無のロジスティック回帰
 library(readxl)
 data <- read_excel("data/finalReport.xlsx")
 View(data)

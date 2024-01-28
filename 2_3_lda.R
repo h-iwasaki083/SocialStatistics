@@ -1,3 +1,4 @@
+# 運動時間と体格指数の相関と、改善警告の有無の線形判別分析
 library(readxl)
 data <- read_excel("finalReport.xlsx")
 View(data)

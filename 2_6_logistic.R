@@ -1,7 +1,6 @@
 # 体格/体力指数を用いたロジスティック回帰
 library(readxl)
 data <- read_excel("data/finalReport.xlsx")
-# View(data)
 
 data$改善警告 <- ifelse(data$改善警告 == "警告あり", 1, 0)
 data$戸籍上の性別<- ifelse(data$戸籍上の性別 == "男", 1, 0)
