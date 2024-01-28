@@ -5,9 +5,11 @@ data <- read_excel("data/finalReport.xlsx")
 
 data$改善警告 <- ifelse(data$改善警告 == "警告あり", 1, 0)
 data$戸籍上の性別<- ifelse(data$戸籍上の性別 == "男", 1, 0)
+predData <- data[51, -2]
+data <- data[-51, ]
 
-mData <- data[data$戸籍上の性別 == 1, ]
-fData <- data[data$戸籍上の性別 == 0, ]
+mData <- data[data$戸籍上の性別 == 1, -2]
+fData <- data[data$戸籍上の性別 == 0, -2]
 exp_data <- data[, -1]
 mexp_data <- mData[, -1]
 fexp_data <- fData[, -1]
@@ -16,6 +18,7 @@ install.packages("MASS")
 library(MASS)
 
 # -----線形判別分析-----
+data <- data[, -2]
 lda_model <- lda(改善警告 ~ 体格指数 + 体力指数, data)
 
 #各変数の判別係数
@@ -36,7 +39,6 @@ abline(c(b / a[2], -a[1] / a[2]))
 y <- a[1] * data[, "体格指数"] + a[2] * data[, "体力指数"] - b
 
 # 判別得点に基づき，警告ありと判定された個体:TRUE，無しと判定された個体:FALSE
-# lda_result <- y * mean(y[data$改善警告 == 1]) > 0
 lda_result <- y * mean(y[data$改善警告 == 1, ]) > 0
 # lda_resultのTRUE:"改善警告あり", FALSE:"改善警告なし"に置き換える
 lda_result[(lda_result == TRUE)] <- 1
@@ -50,6 +52,8 @@ data.frame(data, y, lda_result)
 # 誤判別率
 mean(data[, 1] != lda_result)
 
+# 推定
+prediction <- predict(lda_model, newdata = predData)
 
 # -----線形判別分析_男性-----
 lda_model <- lda(改善警告 ~ 体格指数 + 体力指数, mData)
@@ -74,7 +78,7 @@ y <- a[1] * mData[, "体格指数"] + a[2] * mData[, "体力指数"] - b
 # 判別得点に基づき，警告ありと判定された個体:TRUE，無しと判定された個体:FALSE
 # lda_result <- y * mean(y[mData$改善警告 == 1]) > 0
 lda_result <- y * mean(y[mData$改善警告 == 1, ]) > 0
-# lda_resultのTRUE:"改善警告あり", FALSE:"改善警告なし"に置き換える
+# lda_resultのTRUE:1, FALSE:0に置き換える
 lda_result[(lda_result == TRUE)] <- 1
 lda_result[(lda_result == FALSE)] <- 0
 
@@ -87,6 +91,10 @@ data.frame(mData, y, lda_result)
 mean(mData[, 1] != lda_result)
 
 # 2/28 = 0.07
+
+# 推定
+prediction <- predict(lda_model, newdata = predData)
+# 警告あり、という推定結果
 
 # -----線形判別分析_女性-----
 lda_model <- lda(改善警告 ~ 体格指数 + 体力指数, fData)

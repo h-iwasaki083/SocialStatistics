@@ -1,12 +1,14 @@
+# 体格指数の作成
 library(readxl)
 data <- read_excel("data/finalReport.xlsx")
 View(data)
+data <- data[-51, ]
 
 # 体格指数に必要なものだけ取り出し
 height_weight <- data[, 4:5]
 
 # 相関係数行列による主成分分析
-prcomp_model <- prcomp(height_weight, scale = TRUE) 
+prcomp_model <- prcomp(height_weight, scale = TRUE)
 
 # 固有値のルートと，主成分係数
 prcomp_model

@@ -1,4 +1,4 @@
-# 体格/体力指数を用いたロジスティック回帰
+# 男女別ロジスティック回帰
 library(readxl)
 data <- read_excel("data/finalReport.xlsx")
 

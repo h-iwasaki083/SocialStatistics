@@ -35,11 +35,6 @@ lda_result <- y * mean(y[data$改善警告 == "警告あり", ]) > 0
 lda_result[(lda_result == TRUE)] <- "警告あり"
 lda_result[(lda_result == FALSE)] <- "警告なし"
 
-# 各個体の判別得点と判別結果
-data.frame(y, lda_result)
-# 全てのデータ
-data.frame(data, y, lda_result)
-
 # 誤判別率
 mean(data[, 1] != lda_result)
 

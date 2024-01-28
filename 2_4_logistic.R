@@ -19,9 +19,6 @@ logistic_model <- glm(改善警告 ~ 戸籍上の性別 + 年齢 + 身長 + 体�
 
 summary(logistic_model)
 
-# モデルの選択
-# logistic_model_1 <- step(logistic_model)
-
 # 推定
 logistic_result <- predict(logistic_model, data, type = "response")
 logistic_result <- round(logistic_result)
