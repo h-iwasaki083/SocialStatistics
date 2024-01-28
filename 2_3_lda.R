@@ -1,6 +1,9 @@
 # 運動時間と体格指数の相関と、改善警告の有無の線形判別分析
 library(readxl)
-data <- read_excel("finalReport.xlsx")
+data <- read_excel("data/finalReport.xlsx")
+predData <- data[51, ]
+data <- data[-51, ]
+
 View(data)
 
 install.packages("MASS")
@@ -26,7 +29,8 @@ abline(c(b / a[2], -a[1] / a[2]))
 y <- a[1] * data[, "1日平均運動時間"] + a[2] * data[, "体格指数"] - b
 
 # 判別得点に基づき，警告ありと判定された個体:TRUE，無しと判定された個体:FALSE
-lda_result <- y * mean(y[data$改善警告 == "警告あり"]) > 0
+lda_result <- y * mean(y[data$改善警告 == "警告あり", ]) > 0
+
 # lda_resultのTRUE:"改善警告あり", FALSE:"改善警告なし"に置き換える
 lda_result[(lda_result == TRUE)] <- "警告あり"
 lda_result[(lda_result == FALSE)] <- "警告なし"
@@ -38,3 +42,8 @@ data.frame(data, y, lda_result)
 
 # 誤判別率
 mean(data[, 1] != lda_result)
+
+
+# 推定
+prediction <- predict(lda_model, newdata = predData)
+# 警告あり、という推定結果

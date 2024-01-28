@@ -6,6 +6,9 @@ View(data)
 data$改善警告 <- ifelse(data$改善警告 == "警告あり", 1, 0)
 data$戸籍上の性別<- ifelse(data$戸籍上の性別 == "男", 1, 0)
 
+predData <- data[51, ]
+data <- data[-51, ]
+
 # 男女別データ
 mData <- data[data$戸籍上の性別 == 1, -2]
 fData <- data[data$戸籍上の性別 == 0, -2]
@@ -21,7 +24,7 @@ summary(logistic_model)
 
 # 推定
 logistic_result <- predict(logistic_model, data, type = "response")
-logistic_result <- round(logdsistic_result)
+logistic_result <- round(logistic_result)
 
 logistic_table <- data.frame(Status = data[, 1], Predict = logistic_result)
 
@@ -31,6 +34,10 @@ logistic_table <- table(logistic_table)
 mean(data[, 1] != logistic_result)
 
 1-sum(diag(logistic_table))/sum(logistic_table)
+
+# 推定
+prediction <- predict(logistic_model, newdata = predData, type = "response")
+
 
 # -----<< 男女別にしてみる >>-----
 # 男女別データの作成
